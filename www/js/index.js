@@ -1,0 +1,217 @@
+/*
+ * Licensed to the Apache Software Foundation (ASF) under one
+ * or more contributor license agreements.  See the NOTICE file
+ * distributed with this work for additional information
+ * regarding copyright ownership.  The ASF licenses this file
+ * to you under the Apache License, Version 2.0 (the
+ * "License"); you may not use this file except in compliance
+ * with the License.  You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
+ var localStorage = window.localStorage;
+ var form_title, form_content, form_media;
+ var app = {
+    // Application Constructor
+    initialize: function() {
+        document.addEventListener('deviceready', this.onDeviceReady.bind(this), false);
+    },
+
+    // deviceready Event Handler
+    //
+    // Bind any cordova events here. Common events are:
+    // 'pause', 'resume', etc.
+    onDeviceReady: function() {
+        this.receivedEvent('deviceready');
+        //document.getElementById("cameraGetPicture").addEventListener("click", cameraGetPicture);
+    },
+
+    // Update DOM on a Received Event
+    receivedEvent: function(id) {
+        var parentElement = document.getElementById(id);
+        var listeningElement = parentElement.querySelector('.listening');
+        var receivedElement = parentElement.querySelector('.received');
+
+        listeningElement.setAttribute('style', 'display:none;');
+        receivedElement.setAttribute('style', 'display:block;');
+
+        console.log('Received Event: ' + id);
+    }
+};
+
+
+/************************
+*          MENU         *
+************************/
+// Initialize collapse button
+$(".button-collapse").sideNav();
+
+var hidden = false;
+function hideMenu() {
+    $('#menu').animate({ height: '0px' }, 250, function() {
+        $(this).slideUp();
+    });
+}
+
+function showMenu() {
+    $('#menu').animate({ height: '64px' }, 150, function() {
+        $(this).slideDown();
+    });
+}
+
+function toggleMenu() {
+    if (hidden == false) {
+        hideMenu();
+        hidden = true;
+    } 
+    else {
+        showMenu();
+        hidden = false;
+    }
+}
+
+
+
+/************************
+*          FORM         *
+************************/
+$('#content').trigger('autoresize');
+
+
+
+/************************
+*        ARTICLES       *
+************************/
+
+class Article {
+    constructor(id, title, date, content, media) {
+        this.id = id;
+        this.title = title;
+        this.date = date;
+        this.content = content;
+        this.media = media;
+    }
+
+    static fromJSON(string){
+        return this.fromObject(JSON.parse(string));
+    }
+
+    static fromObject(object) {
+        return new Article (
+            object.id,
+            object.title,
+            object.date,
+            object.content,
+            object.media
+            )
+    }
+
+    toHTML(){
+        return "<div class='card blue darken-3 darken-1'>"
+        + "<div class='card-content white-text'>"
+        + "<span class='card-title'>" + this.title + "</span>"
+        + "<span>" + this.date + "</span>"
+        + "<br><img src='" + this.media + "' style='max-width:20%;'>"
+        + "<p>" + this.content + "</p>"
+        + "</div>";
+    }
+}
+
+function addArticle(article) {
+    localStorage.setItem(article.id, JSON.stringify(article));
+}
+
+function deleteArticle(article) {
+    localStorage.removeItem(article.id);
+}
+
+function listerArticles() {
+    var articles = [];
+    $.each(localStorage, function(key, value) {
+        articles.push(Article.fromJSON(value));
+    });
+    return articles;
+}
+
+function showArticles(){
+    $.each(listerArticles(),function(i,article) {
+        showArticle(article);
+    });
+}
+
+function showArticle(article) {
+    $('#articles_container').prepend(article.toHTML());
+}
+
+
+function getFormValues(){
+    form_title = $("#title").val();
+    form_content = $("#content").val();
+    //"http://www.simes.it/img/home/102014/COOLQUADRATO_PALETTO_MINIMALE_03.jpg";
+}
+
+function formToArticle(){
+    getFormValues();
+    console.log($("#file").val());
+    return new Article(
+        localStorage.length,
+        form_title,
+        new Date(),
+        form_content,
+        form_media
+        );
+}
+
+$("#submit").click(function(event) {
+    addArticle(formToArticle());
+    $("#add_article").hide();
+    $("#articles").fadeIn(100);
+});
+
+$(".btn_add").click(function(event) {
+    event.preventDefault();
+    $("#articles").hide();
+    $("#add_article").fadeIn(100);
+});
+
+
+$("#add_article").hide();
+showArticles();
+//showArticle(Article.fromJSON(localStorage.getItem(1)));
+
+/************************
+*    FONCTIONNALITIES   *
+************************/
+
+$("#cameraGetPicture").click(function(event) {
+    cameraGetPicture();
+});
+
+
+function cameraGetPicture() {
+    navigator.camera.getPicture(onSuccess, onFail, { quality: 50,
+        destinationType: Camera.DestinationType.DATA_URL,
+        sourceType: Camera.PictureSourceType.PHOTOLIBRARY
+    });
+
+    function onSuccess(imageData) {
+        //var image = document.getElementById('myImage');
+        form_media = "data:image/jpeg;base64," + imageData;
+    }
+
+    function onFail(message) {
+        alert('Failed because: ' + message);
+    }
+}
+
+
+
+
+app.initialize();
