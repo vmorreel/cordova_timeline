@@ -116,11 +116,17 @@ class Article {
     }
 
     toHTML(){
+        var picture = "<br><img src='" + this.media + "' style='max-width:20%;'>"
+
+        if (this.media === undefined) {
+            picture = "<br>"
+        }
+
         return "<div class='card blue darken-3 darken-1'>"
         + "<div class='card-content white-text'>"
         + "<span class='card-title'>" + this.title + "</span>"
         + "<span>" + this.date + "</span>"
-        + "<br><img src='" + this.media + "' style='max-width:20%;'>"
+        + picture
         + "<p>" + this.content + "</p>"
         + "</div>";
     }
@@ -180,13 +186,26 @@ function formToArticle(){
         );
 }
 
+var div_loading = $("#loading_gif");
+
+function showLoading() {
+    div_loading.show();
+    setTimeout(hideLoading, 5000);  // 5 seconds
+}
+
+function hideLoading() {
+    div_loading.hide();
+}
+
+
 $("#submit").click(function(event) {
+    if ($("#title").val().length !== 0 || $("#content").val().length !== 0)
+        clicked = true;
+
     if (clicked == false) {
         form_media = "https://media.giphy.com/media/GpUeJjdxvTIek/giphy.gif";
     }
     addArticle(formToArticle());
-    $("#add_article").hide();
-    $("#articles").fadeIn(100);
 });
 
 $(".btn_add").click(function(event) {
@@ -197,6 +216,7 @@ $(".btn_add").click(function(event) {
 
 
 $("#add_article").hide();
+$("#loading_gif").hide();
 showArticles();
 //showArticle(Article.fromJSON(localStorage.getItem(1)));
 
