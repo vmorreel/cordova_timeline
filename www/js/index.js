@@ -237,11 +237,13 @@ $("videoCapture").click(function(event) {
 function cameraGetPicture() {
     navigator.camera.getPicture(onSuccess, onFail, { quality: 50,
         destinationType: Camera.DestinationType.DATA_URL,
-        sourceType: Camera.PictureSourceType.PHOTOLIBRARY
+        sourceType: Camera.PictureSourceType.PHOTOLIBRARY,
+        supporttype: 2
     });
 
     function onSuccess(imageData) {
-        //var image = document.getElementById('myImage');
+        var image = document.getElementById('img_preview');
+        image.src = "data:image/jpeg;base64," + imageData;
         form_media = "data:image/jpeg;base64," + imageData;
     }
 

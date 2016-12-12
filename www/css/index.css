@@ -95,8 +95,16 @@ div.card-content img, div.card-content p {
 }
 
 .card .card-content p {
-    margin: 0 0 0 3%;
     width: 75%;
+}
+
+.card .card-content img {
+    margin: 0 3% 0 0;
+}
+
+#img_preview {
+    margin: 1.5% auto;
+    max-width: 25%;
 }
 
 
