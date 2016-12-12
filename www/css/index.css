@@ -72,6 +72,16 @@ div.nav-wrapper>ul.hide-on-med-and-down {
     margin: 2% auto;
 }
 
+#submit {
+    margin-top: 3%;
+}
+
+#add_article > form > div.file-field.input-field.col.s12 a {
+    margin: auto;
+    margin-right: 1%;
+    float: none;
+}
+
 div.card-content img, div.card-content p {
     display: inline-block;
     vertical-align: top;
@@ -79,6 +89,7 @@ div.card-content img, div.card-content p {
 
 .card .card-content p {
     margin: 0 0 0 3%;
+    width: 75%;
 }
 
 

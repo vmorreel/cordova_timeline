@@ -18,6 +18,7 @@
  */
  var localStorage = window.localStorage;
  var form_title, form_content, form_media;
+ var clicked = false;
  var app = {
     // Application Constructor
     initialize: function() {
@@ -30,6 +31,7 @@
     // 'pause', 'resume', etc.
     onDeviceReady: function() {
         this.receivedEvent('deviceready');
+        //document.getElementById("videoCapture").addEventListener("click", videoCapture);
         //document.getElementById("cameraGetPicture").addEventListener("click", cameraGetPicture);
     },
 
@@ -152,14 +154,23 @@ function showArticle(article) {
 
 
 function getFormValues(){
-    form_title = $("#title").val();
-    form_content = $("#content").val();
-    //"http://www.simes.it/img/home/102014/COOLQUADRATO_PALETTO_MINIMALE_03.jpg";
+    if ($("#title").val().length === 0) {
+        form_title = "Mais ... mais ... ?";
+    }
+    else {
+        form_title = $("#title").val();
+    }
+
+    if ($("#content").val().length === 0) {
+        form_content = "Où est le titre ?";
+    }
+    else {
+        form_content = $("#content").val();
+    }
 }
 
 function formToArticle(){
     getFormValues();
-    console.log($("#file").val());
     return new Article(
         localStorage.length,
         form_title,
@@ -170,6 +181,9 @@ function formToArticle(){
 }
 
 $("#submit").click(function(event) {
+    if (clicked == false) {
+        form_media = "https://media.giphy.com/media/GpUeJjdxvTIek/giphy.gif";
+    }
     addArticle(formToArticle());
     $("#add_article").hide();
     $("#articles").fadeIn(100);
@@ -191,7 +205,12 @@ showArticles();
 ************************/
 
 $("#cameraGetPicture").click(function(event) {
+    clicked = true;
     cameraGetPicture();
+});
+
+$("videoCapture").click(function(event) {
+    videoCapture();
 });
 
 
@@ -208,6 +227,29 @@ function cameraGetPicture() {
 
     function onFail(message) {
         alert('Failed because: ' + message);
+    }
+}
+
+
+
+function videoCapture() {
+    var options = {
+        limit: 1,
+        duration: 10
+    };
+    navigator.device.capture.captureVideo(onSuccess, onError, options);
+
+    function onSuccess(mediaFiles) {
+        var i, path, len;
+
+        for (i = 0, len = mediaFiles.length; i < len; i += 1) {
+            path = mediaFiles[i].fullPath;
+            console.log(mediaFiles);
+        }
+    }
+
+    function onError(error) {
+        navigator.notification.alert('Error code: ' + error.code, null, 'Capture Error');
     }
 }
 

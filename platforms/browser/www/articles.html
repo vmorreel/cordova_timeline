@@ -71,12 +71,9 @@
                         <h2>Add an article :</h2>
                         <form class="col s12">
                             <div class="row">
-                                <div class="input-field center col s6">
+                                <div class="input-field center col s12">
                                     <input id="title" type="text" class="validate">
                                     <label for="title">Title :</label>
-                                </div>
-                                <div class="file-field input-field col s6">
-                                    <a id="cameraGetPicture" class="btn">Select file</a>
                                 </div>
                             </div> 
                             <div class="row">
@@ -84,6 +81,10 @@
                                     <textarea id="content" class="materialize-textarea"></textarea>
                                     <label for="content">Content :</label>
                                 </div>
+                            </div>
+                            <div class="file-field input-field col s12">
+                                <a id="cameraGetPicture" class="btn">Select image file</a>
+                                <a id="videoCapture" class="btn">Select video file</a>
                             </div>
                             <input type="submit" class="btn" id="submit" value="Submit">
                         </form>
@@ -95,7 +96,7 @@
                             <p class="event received">Device is Ready</p>
                         </div>
                         <div id="articles_container">
-                            
+
                         </div>
                     </section>
                 </div>
