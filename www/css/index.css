@@ -94,12 +94,24 @@ div.card-content img, div.card-content p {
     margin: auto;
 }
 
-.card .card-content p {
+.card .card-content>p {
     width: 75%;
 }
 
 .card .card-content img {
-    margin: 0 3% 0 0;
+    margin: 0 3% 3% 0;
+}
+
+.positionData {
+    font-size: 1em;
+    font-weight: bold;
+}
+
+div[id~='map'] {
+    margin-top: 2%;
+    width: 100%;
+    height: 150px;
+    background-color: grey;
 }
 
 #img_preview {

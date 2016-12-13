@@ -19,6 +19,8 @@
  var localStorage = window.localStorage;
  var form_title, form_content, form_media;
  var clicked = false;
+ var positionContent;
+ //var splitPos = []; //to save latitude and longitude
  var app = {
     // Application Constructor
     initialize: function() {
@@ -33,6 +35,7 @@
         this.receivedEvent('deviceready');
         //document.getElementById("videoCapture").addEventListener("click", videoCapture);
         //document.getElementById("cameraGetPicture").addEventListener("click", cameraGetPicture);
+        //document.getElementById("getPosition").addEventListener("click", getPosition);
     },
 
     // Update DOM on a Received Event
@@ -92,13 +95,15 @@ $('#content').trigger('autoresize');
 *        ARTICLES       *
 ************************/
 
+//For maps, add latitude & longitude attributes
 class Article {
-    constructor(id, title, date, content, media) {
+    constructor(id, title, date, content, media, position) {
         this.id = id;
         this.title = title;
         this.date = date;
         this.content = content;
         this.media = media;
+        this.position = position;
     }
 
     static fromJSON(string){
@@ -111,7 +116,8 @@ class Article {
             object.title,
             object.date,
             object.content,
-            object.media
+            object.media,
+            object.position
             )
     }
 
@@ -122,22 +128,30 @@ class Article {
             picture = "<br>"
         }
 
+        if(this.position === undefined){
+            this.position = "Undefined location ¯\\_༼ ಥ ‿ ಥ ༽_/¯"
+        }
+
+        //recup values of lat on long in an array
+        /*if (this.position) {
+            var splitPos = this.position.split('<br>');
+        }*/
+
         return "<div class='card blue darken-3 darken-1'>"
         + "<div class='card-content white-text'>"
         + "<span class='card-title'>" + this.title + "</span>"
         + "<span>" + this.date + "</span>"
         + picture
-        + "<p>" + this.content + "</p>"
+        + "<p>" + this.content + "</p><br>"
+        + "<span class='positionData'>" + this.position + "</span>"
+        //+ "<div id='map" + this.id + "'></div>"
         + "</div>";
+        //initMap(this.latitude, this.longitude, this.id);
     }
 }
 
 function addArticle(article) {
     localStorage.setItem(article.id, JSON.stringify(article));
-}
-
-function deleteArticle(article) {
-    localStorage.removeItem(article.id);
 }
 
 function listerArticles() {
@@ -182,20 +196,11 @@ function formToArticle(){
         form_title,
         new Date(),
         form_content,
-        form_media
+        form_media,
+        positionContent
         );
 }
 
-var div_loading = $("#loading_gif");
-
-function showLoading() {
-    div_loading.show();
-    setTimeout(hideLoading, 5000);  // 5 seconds
-}
-
-function hideLoading() {
-    div_loading.hide();
-}
 
 
 $("#submit").click(function(event) {
@@ -224,14 +229,12 @@ showArticles();
 *    FONCTIONNALITIES   *
 ************************/
 
+/** PICTURE **/
 $("#cameraGetPicture").click(function(event) {
     clicked = true;
     cameraGetPicture();
 });
 
-$("videoCapture").click(function(event) {
-    videoCapture();
-});
 
 
 function cameraGetPicture() {
@@ -253,12 +256,17 @@ function cameraGetPicture() {
 }
 
 
+/** VIDEO **/
+$("#videoCapture").click(function(event) {
+    videoCapture();
+});
 
 function videoCapture() {
     var options = {
         limit: 1,
         duration: 10
     };
+
     navigator.device.capture.captureVideo(onSuccess, onError, options);
 
     function onSuccess(mediaFiles) {
@@ -275,6 +283,59 @@ function videoCapture() {
     }
 }
 
+
+/** GEOLOCATION **/
+$("#getPosition").click(function(event) {
+    getPosition();
+});
+
+function getPosition() {
+
+    var options = {
+        enableHighAccuracy: true,
+        maximumAge: 3600000
+    }
+
+    var watchID = navigator.geolocation.getCurrentPosition(onSuccess, onError, options);
+
+    function onSuccess(position) {
+        //push latitude and longitude in the array
+        /*splitPos.push(position.coords.latitude);
+        splitPos.push(position.coords.longitude);*/
+
+        positionContent = 
+        'Latitude: '          + position.coords.latitude          + '<br>' +
+        'Longitude: '         + position.coords.longitude         /*+ '\n' +
+        'Altitude: '          + position.coords.altitude          + '\n' +
+        'Accuracy: '          + position.coords.accuracy          + '\n' +
+        'Altitude Accuracy: ' + position.coords.altitudeAccuracy  + '\n' +
+        'Heading: '           + position.coords.heading           + '\n' +
+        'Speed: '             + position.coords.speed             + '\n' +
+        'Timestamp: '         + position.timestamp                */;
+        
+        alert("Votre posiiton a été ajoutée à l'article ! \n \n" + position.coords.latitude + '\n' + position.coords.longitude);
+    };
+
+    function onError(error) {
+        alert('code: '    + error.code    + '\n' + 'message: ' + error.message + '\n');
+    }
+}
+
+/** MAPS **/
+
+//Non fonctionnel
+
+/*function initMap(latitude, longitude, id) {
+    var posArticle = {lat: parseInt(latitude), lng: parseInt(longitude)};
+    var map = new google.maps.Map(document.getElementById('map'+id), {
+        zoom: 1,
+        center: posArticle
+    });
+    var marker = new google.maps.Marker({
+        position: posArticle,
+        map: map
+    });
+}*/
 
 
 

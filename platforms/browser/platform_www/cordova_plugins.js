@@ -285,7 +285,8 @@ module.exports.metadata =
     "cordova-plugin-compat": "1.1.0",
     "cordova-plugin-camera": "2.3.0",
     "cordova-plugin-file": "4.3.0",
-    "cordova-plugin-media-capture": "1.4.0"
+    "cordova-plugin-media-capture": "1.4.0",
+    "cordova-plugin-geolocation": "2.4.1"
 }
 // BOTTOM OF METADATA
 });
