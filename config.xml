@@ -23,4 +23,7 @@
         <allow-intent href="itms:*" />
         <allow-intent href="itms-apps:*" />
     </platform>
+    <preference name = "SplashScreen" value = "../../../../img/ring.svg" />
+    <preference name = "SplashScreenDelay" value = "1000000" />
+    <preference name = "SplashMaintainAspectRatio" value = "true" />
 </widget>

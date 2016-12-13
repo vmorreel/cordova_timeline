@@ -106,13 +106,15 @@ div.card-content img, div.card-content p {
     font-size: 1em;
     font-weight: bold;
 }
-
+/* google map style sheet */
+/* 
 div[id~='map'] {
     margin-top: 2%;
     width: 100%;
     height: 150px;
     background-color: grey;
-}
+} 
+*/
 
 #img_preview {
     margin: 1.5% auto;
