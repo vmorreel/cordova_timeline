@@ -133,6 +133,7 @@ class Article {
 
     toHTML(){
         var picture = "<br>";
+        var map = "<div id='map" + this.id + "' style='width:100%; height:175px; background-color: grey;'></div>"
 
         //recup values of lat on long in an array
         /*if (this.position) {
@@ -140,12 +141,12 @@ class Article {
         }*/
 
         if(this.position === undefined){
-            this.position = "Undefined location ¯\\_༼ ಥ ‿ ಥ ༽_/¯"
+            this.position = "Undefined location ¯\\_༼ ಥ ‿ ಥ ༽_/¯";
+            map = "</div>";
         }
 
         if (this.media !== undefined) {
             picture = "<img src='" + this.media + "'>";
-
             return "<div class='col s12 m6'>"
             + "<div class='card'>"
             + "<div class='card-image'>"
@@ -154,10 +155,10 @@ class Article {
             + "</div>"
             + "<div class='card-content'>"
             + "<span>" + this.date + "</span>"
-            + "<p>" + this.content + "</p><br>"
+            + "<div class='article_content'><p>" + this.content + "</p></div><br>"
+            + "<div class='geolocation'>"
             + "<span class='positionData'>" + this.position + "</span>"
-            + "<div id='map" + this.id + "' style='width:100%; height:175px; background-color: grey;'></div>"
-            + "</div>"
+            + map
             + "</div>"
             + "</div>";
         }
@@ -170,11 +171,12 @@ class Article {
             + "<span>" + this.date + "</span>"
             + picture
             + "<p>" + this.content + "</p><br>"
+            + "<div id='geolocation'"
             + "<span class='positionData'>" + this.position + "</span>"
-            + "<div id='map" + this.id + "' style='width:100%; height:175px; background-color: grey;'></div>"
+            + map
+            + "</div>"
             + "</div>"
             + "</div>";
-            //initMap(this.latitude, this.longitude, this.id); //see initMap() function below (line 333)
         }
 
 
