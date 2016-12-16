@@ -216,6 +216,10 @@ function getFormValues(){
     }
 
     if ($("#content").val().length === 0) {
+        form_content = "";
+    }
+
+    if ($("#content").val().length === 0 && $("#title").val().length === 0) {
         form_content = "Où est le titre ?";
     }
     else {
