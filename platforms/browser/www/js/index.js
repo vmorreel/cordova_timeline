@@ -259,7 +259,9 @@ $(".btn_add").click(function(event) {
 
 /** DELETE ALL ARTICLES **/
 $(".btn_delete").click(function(event) {
-    localStorage.clear();
+    if(confirm("Êtes-vous sûr de vouloir supprimer tous les articles ?")) {
+        localStorage.clear();
+    }
 });
 
 
@@ -383,7 +385,7 @@ function initMap() {
 
             var posArticle = {lat: Number(lati), lng: Number(longi)};
             var map = new google.maps.Map(document.getElementById('map'+i), {
-                zoom: Math.floor((Math.random() * 15) + 10),
+                zoom: Math.floor((Math.random() * 13) + 9),
                 center: posArticle
             });
             var marker = new google.maps.Marker({
