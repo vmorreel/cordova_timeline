@@ -163,7 +163,7 @@ class Article {
             + "<div class='card'>"
             + "<div class='card-content'>"
             + "<span class='card-title'>" + this.title + "</span>"
-            + "<span>" + this.date + "</span>"            
+            + "<span class='truncate'>" + this.date + "</span>"            
             + "<div class='card-action'>"
             + picture
             + "<p>" + this.content + "</p>"
@@ -281,6 +281,7 @@ showArticles();
 /** PICTURE **/
 $("#cameraGetPicture").click(function(event) {
     clicked = true;
+    $(this).addClass('disabled');
     cameraGetPicture();
 });
 
@@ -298,6 +299,7 @@ function cameraGetPicture() {
         image.src = "data:image/jpeg;base64," + imageData;
         form_media = "data:image/jpeg;base64," + imageData;
         $("#img_preview").addClass('card');
+        $("#cameraGetPicture p").html('Image added');
     }
 
     function onFail(message) {
@@ -336,7 +338,9 @@ function videoCapture() {
 
 /** GEOLOCATION **/
 $("#getPosition").click(function(event) {
+    $(this).addClass('disabled');
     getPosition();
+    $("#getPosition p").html('Geolocation added');
 });
 
 function getPosition() {
@@ -366,7 +370,7 @@ function getPosition() {
         'Speed: '             + position.coords.speed             + '\n' +
         'Timestamp: '         + position.timestamp                */;
         
-        alert("Votre position a été ajoutée à l'article ! \n \n" + position.coords.latitude + '\n' + position.coords.longitude);
+        alert("Votre position a été ajoutée à l'article ! \n \nLatitude: " + position.coords.latitude + '\nLongitude: ' + position.coords.longitude);
     };
 
     function onError(error) {
