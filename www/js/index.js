@@ -144,7 +144,7 @@ class Article {
         }
 
         if (this.media !== undefined) {
-            picture = "<img src='" + this.media + "'>";
+            picture = "<img src='" + this.media + "' class='materialboxed' data-caption='" + this.title + "'>";
             return "<div class='col s12'>"
             + "<div class='card'>"
             + "<div class='card-image'>"
