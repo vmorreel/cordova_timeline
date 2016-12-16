@@ -46,9 +46,8 @@ body {
 
 
 #logo {
-    margin: 3% auto;
-    max-width: 140px;
-
+    margin: 15% 0 0 30%;
+    max-width: 50px;
 }
 
 section.container {
@@ -64,7 +63,7 @@ section.container {
 }
 
 div.nav-wrapper>ul.hide-on-med-and-down {
-    margin-left: 44%;
+    margin-left: 38%;
 }
 
 #articles > div > div.card.blue.darken-1.darken-3 {
@@ -72,7 +71,20 @@ div.nav-wrapper>ul.hide-on-med-and-down {
     margin: 2% auto;
 }
 
+div.file-field.input-field.col.s12 a>i, #submit>i {
+    margin-right: 10px;
+} 
+
+div.file-field.input-field.col.s12 a {
+    display: inline-flex;
+}
+
+div.file-field.input-field.col.s12 a p, #submit p {
+    margin: auto;
+}
+
 #submit {
+    display: inline-flex;
     margin-top: 3%;
 }
 
@@ -98,13 +110,26 @@ div.card-content img, div.card-content p {
     width: 75%;
 }
 
+.card .card-title {
+    margin-right: 2%;
+}
+
 .card .card-content img {
     margin: 0 3% 3% 0;
+}
+
+#img_preview {
+
+}
+
+.card {
+    min-height: 200px;
 }
 
 .positionData {
     font-size: 1em;
     font-weight: bold;
+    padding-top: 5%;
 }
 /* google map style sheet */
 /* 
@@ -118,7 +143,7 @@ div[id~='map'] {
 
 #img_preview {
     margin: 1.5% auto;
-    max-width: 25%;
+    max-width: 60%;
 }
 
 
@@ -132,22 +157,22 @@ div[id~='map'] {
     border-left: 15px solid #2face4;
     border-right: 15px solid #2face4;
     border-bottom: 10px solid transparent;
+    z-index: 100;
 }
 
-#hidder p {
+#hidder i {
+    position: absolute;
     cursor: pointer;
-    font-weight: bold;
-    right: 15px;
-    text-indent:0.1em;
-    transform:rotate(90deg) translate( -50%,0);
+    font-size: 2.5em;
+    right: -16px;
+    top: 13px;
 }
 
-section.container>div.row {
-    background-color: white;
-    margin-top: 2%;
-    padding: 5px;
-    box-shadow: 0px 2px 5px #888888;
+div.fixed-action-btn.horizontal {
+    display: none;
 }
+
+
 
 form>div>div>input+label {
     text-align: left;
@@ -156,5 +181,18 @@ form>div>div>input+label {
 @media screen and (max-width: 993px) {
     #articles > div > div.card.blue.darken-1.darken-3 {
         max-width: 100%;
+    }
+    #logo {
+        margin: 7% 0 0 0;
+        max-width: 50px;
+    }
+    #add_article > form > div.file-field.input-field.col.s12 a {
+        margin-bottom: 3%;
+    }
+    div.fixed-action-btn.horizontal {
+        display: inline;
+    }
+    #hidder {
+        display: none;
     }
 }

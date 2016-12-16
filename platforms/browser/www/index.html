@@ -40,32 +40,32 @@
         <body>
             <nav id="menu">
                 <div class="nav-wrapper">
-                    <a href="articles.html" class="brand-logo"><img src="img/logo.png" id="logo"></a>
+                    <a href="index.html" class="brand-logo"><img src="img/home.svg" id="logo"></a>
                     <a href="#" data-activates="mobile-demo" class="button-collapse"><i class="material-icons">menu</i></a>
                     <ul class="hide-on-med-and-down">
-                        <li><a href="articles.html">Timeline</a></li>
-                        <li><a href="articles.html" class="btn_add">Add article</a></li>
+                        <li><a href="index.html">Timeline</a></li>
+                        <li><a href="" class="btn_add">Add article</a></li>
+                        <li><a href="" class="btn_delete">Delete all articles</a></li>
                     </ul>
                     <ul class="side-nav" id="mobile-demo">
-                        <li><a href="articles.html">Timeline</a></li>
-                        <li><a href="articles.html" class="btn_add">Add article</a></li>
+                        <li><a href="index.html"><i class="material-icons">web</i>Timeline</a></li>
+                        <li><a href="" class="btn_add"><i class="material-icons">note_add</i>Add article</a></li>
+                        <li><a href="" class="btn_delete"><i class="material-icons">delete</i>Delete all articles</a></li>
                     </ul>
                 </div>
             </nav>
-            <div id="hidder" class="right" onclick="toggleMenu()"><p>HIDE</p></div>
+            <div id="hidder" class="right" onclick="toggleMenu()"><i class="material-icons">swap_vert</i></div>
 
             <div class="fixed-action-btn horizontal">
                 <a class="btn-floating btn-large blue">
                     <i class="large material-icons">toc</i>
                 </a>
                 <ul>
-                    <!-- <li><a href="" class="btn-floating red"><i class="material-icons">delete</i></a></li>
-                    <li><a href="" class="btn-floating yellow darken-1"><i class="material-icons">mode_edit</i></a></li> -->
+                    <li><a href="" class="btn-floating red btn_delete"><i class="material-icons">delete</i></a></li>
+                    <li><a href="" class="btn-floating yellow" onclick="toggleMenu();" id="swap_navbar"><i class="material-icons">swap_vert</i></a></li>
                     <li><a href="" class="btn-floating green"><i class="material-icons btn_add">note_add</i></a></li>
                 </ul>
             </div>
-
-            <div id="loading_gif"></div>
 
             <section class="container">
                 <div class="row">
@@ -85,12 +85,12 @@
                                 </div>
                             </div>
                             <div class="file-field input-field col s12">
-                                <a id="cameraGetPicture" class="btn">Select image file</a>
-                                <a id="videoCapture" class="btn">Select video file</a>
-                                <a id="getPosition" class="btn">Add the geolocation</a>
+                                <a id="cameraGetPicture" class="btn"><i class="material-icons">aspect_ratio</i><p>Select image file</p></a>
+                                <a id="videoCapture" class="btn"><i class="material-icons">movie</i><p>Select video file</p></a>
+                                <a id="getPosition" class="btn"><i class="material-icons">location_on</i><p>Add the geolocation</p></a>
                             </div>
                             <img id="img_preview"><br>
-                            <input type="submit" class="btn" id="submit" value="Submit">
+                            <a id="submit" class="btn" href="index.html"><i class="material-icons">done</i><p>Submit</p></a>
                         </form>
                     </section>
 
@@ -100,12 +100,16 @@
                             <p class="event received">Device is Ready</p>
                         </div>
                         <div id="articles_container">
+                            <div class="row">
 
+                            </div>
                         </div>
                     </section>
                 </div>
             </section>
 
+
+            <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDVTAKs0QQb5PMl3QiRB4VXjTYaeYepVFQ&callback=initMap"></script>
             <script type="text/javascript" src="cordova.js"></script>
             <script type="text/javascript" src="js/jquery-3.1.1.min.js"></script>
             <!-- Compiled and minified JavaScript -->

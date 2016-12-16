@@ -19,7 +19,7 @@
  var localStorage = window.localStorage;
  var form_title, form_content, form_media;
  var clicked = false;
- var positionContent;
+ var positionContent, lat, long;
  //var splitPos = []; //to save latitude and longitude
  var app = {
     // Application Constructor
@@ -82,6 +82,11 @@ function toggleMenu() {
     }
 }
 
+$("#swap_navbar").click(function(event) {
+    event.preventDefault();
+    $("#sidenav-overlay").fadeTo(100, 0);
+})
+
 
 
 
@@ -98,13 +103,15 @@ $('#content').trigger('autoresize');
 
 //For maps, add latitude & longitude attributes
 class Article {
-    constructor(id, title, date, content, media, position) {
+    constructor(id, title, date, content, media, position, latitude, longitude) {
         this.id = id;
         this.title = title;
         this.date = date;
         this.content = content;
         this.media = media;
         this.position = position;
+        this.latitude = latitude;
+        this.longitude = longitude;
     }
 
     static fromJSON(string){
@@ -118,36 +125,60 @@ class Article {
             object.date,
             object.content,
             object.media,
-            object.position
+            object.position,
+            object.latitude,
+            object.longitude
             )
     }
 
     toHTML(){
-        var picture = "<br><img src='" + this.media + "' style='max-width:20%;'>"
-
-        if (this.media === undefined) {
-            picture = "<br>"
-        }
-
-        if(this.position === undefined){
-            this.position = "Undefined location ¯\\_༼ ಥ ‿ ಥ ༽_/¯"
-        }
+        var picture = "<br>";
 
         //recup values of lat on long in an array
         /*if (this.position) {
             var splitPos = this.position.split('<br>');
         }*/
 
-        return "<div class='card blue darken-3 darken-1'>"
-        + "<div class='card-content white-text'>"
-        + "<span class='card-title'>" + this.title + "</span>"
-        + "<span>" + this.date + "</span>"
-        + picture
-        + "<p>" + this.content + "</p><br>"
-        + "<span class='positionData'>" + this.position + "</span>"
-        //+ "<div id='map" + this.id + "'></div>"
-        + "</div>";
-        //initMap(this.latitude, this.longitude, this.id);
+        if(this.position === undefined){
+            this.position = "Undefined location ¯\\_༼ ಥ ‿ ಥ ༽_/¯"
+        }
+
+        if (this.media !== undefined) {
+            picture = "<img src='" + this.media + "'>";
+
+            return "<div class='col s12 m6'>"
+            + "<div class='card'>"
+            + "<div class='card-image'>"
+            + picture
+            + "<span class='card-title'>" + this.title + "</span>"
+            + "</div>"
+            + "<div class='card-content'>"
+            + "<span>" + this.date + "</span>"
+            + "<p>" + this.content + "</p><br>"
+            + "<span class='positionData'>" + this.position + "</span>"
+            + "<div id='map" + this.id + "' style='width:100%; height:175px; background-color: grey;'></div>"
+            + "</div>"
+            + "</div>"
+            + "</div>";
+        }
+
+        else {
+            return "<div class='col s12 m6'>"
+            + "<div class='card'>"
+            + "<div class='card-content'>"
+            + "<span class='card-title'>" + this.title + "</span>"
+            + "<span>" + this.date + "</span>"
+            + picture
+            + "<p>" + this.content + "</p><br>"
+            + "<span class='positionData'>" + this.position + "</span>"
+            + "<div id='map" + this.id + "' style='width:100%; height:175px; background-color: grey;'></div>"
+            + "</div>"
+            + "</div>";
+            //initMap(this.latitude, this.longitude, this.id); //see initMap() function below (line 333)
+        }
+
+
+
     }
 }
 
@@ -163,15 +194,16 @@ function listerArticles() {
     return articles;
 }
 
+function showArticle(article) {
+    $('#articles_container>div.row').prepend(article.toHTML());
+}
+
 function showArticles(){
     $.each(listerArticles(),function(i,article) {
         showArticle(article);
     });
 }
 
-function showArticle(article) {
-    $('#articles_container').prepend(article.toHTML());
-}
 
 
 function getFormValues(){
@@ -198,12 +230,14 @@ function formToArticle(){
         new Date(),
         form_content,
         form_media,
-        positionContent
+        positionContent,
+        lat,
+        long
         );
 }
 
 
-
+/** ADD ARTICLE + SET THE MEDIA IF SELECTED **/
 $("#submit").click(function(event) {
     if ($("#title").val().length !== 0 || $("#content").val().length !== 0)
         clicked = true;
@@ -214,15 +248,22 @@ $("#submit").click(function(event) {
     addArticle(formToArticle());
 });
 
+
+/** SHOW FORM TO ADD ARTICLE **/
 $(".btn_add").click(function(event) {
     event.preventDefault();
     $("#articles").hide();
     $("#add_article").fadeIn(100);
 });
 
+/** DELETE ALL ARTICLES **/
+$(".btn_delete").click(function(event) {
+    localStorage.clear();
+});
+
+
 
 $("#add_article").hide();
-$("#loading_gif").hide();
 showArticles();
 //showArticle(Article.fromJSON(localStorage.getItem(1)));
 
@@ -249,6 +290,7 @@ function cameraGetPicture() {
         var image = document.getElementById('img_preview');
         image.src = "data:image/jpeg;base64," + imageData;
         form_media = "data:image/jpeg;base64," + imageData;
+        $("#img_preview").addClass('card');
     }
 
     function onFail(message) {
@@ -304,6 +346,9 @@ function getPosition() {
         /*splitPos.push(position.coords.latitude);
         splitPos.push(position.coords.longitude);*/
 
+        lat = position.coords.latitude;
+        long = position.coords.longitude;
+
         positionContent = 
         'Latitude: '          + position.coords.latitude          + '<br>' +
         'Longitude: '         + position.coords.longitude         /*+ '\n' +
@@ -314,7 +359,7 @@ function getPosition() {
         'Speed: '             + position.coords.speed             + '\n' +
         'Timestamp: '         + position.timestamp                */;
         
-        alert("Votre posiiton a été ajoutée à l'article ! \n \n" + position.coords.latitude + '\n' + position.coords.longitude);
+        alert("Votre position a été ajoutée à l'article ! \n \n" + position.coords.latitude + '\n' + position.coords.longitude);
     };
 
     function onError(error) {
@@ -326,18 +371,25 @@ function getPosition() {
 
 //Non fonctionnel
 
-/*function initMap(latitude, longitude, id) {
-    var posArticle = {lat: parseInt(latitude), lng: parseInt(longitude)};
-    var map = new google.maps.Map(document.getElementById('map'+id), {
-        zoom: 1,
-        center: posArticle
-    });
-    var marker = new google.maps.Marker({
-        position: posArticle,
-        map: map
-    });
-}*/
+function initMap() {
+    for (i=0; i<localStorage.length; i++) {
+        var article = localStorage.getItem(i);
+        var data = JSON.parse(article);
 
+        var lati = data['latitude'];
+        var longi = data['longitude'];
+
+        var posArticle = {lat: Number(lati), lng: Number(longi)};
+        var map = new google.maps.Map(document.getElementById('map'+i), {
+            zoom: 12,
+            center: posArticle
+        });
+        var marker = new google.maps.Marker({
+            position: posArticle,
+            map: map
+        });
+    }
+}
 
 
 app.initialize();

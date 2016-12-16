@@ -19,6 +19,6 @@
     <allow-intent href="mailto:*" />
     <allow-intent href="geo:*" />
     <preference name="SplashScreen" value="../../../../img/ring.svg" />
-    <preference name="SplashScreenDelay" value="3000" />
+    <preference name="SplashScreenDelay" value="1000" />
     <preference name="SplashMaintainAspectRatio" value="true" />
 </widget>
