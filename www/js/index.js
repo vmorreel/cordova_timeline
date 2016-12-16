@@ -137,11 +137,6 @@ class Article {
         var geolocation = "<div class='geolocation'>" + "<span class='positionData'>" + this.position + "</span>" + map
         + "</div>";
 
-        //recup values of lat on long in an array
-        /*if (this.position) {
-            var splitPos = this.position.split('<br>');
-        }*/
-
         if(this.position === undefined){
             this.position = "";
             map = "</div>";
@@ -382,18 +377,20 @@ function initMap() {
         var article = localStorage.getItem(i);
         var data = JSON.parse(article);
 
-        var lati = data['latitude'];
-        var longi = data['longitude'];
+        if(data['position'] !== undefined) {
+            var lati = data['latitude'];
+            var longi = data['longitude'];
 
-        var posArticle = {lat: Number(lati), lng: Number(longi)};
-        var map = new google.maps.Map(document.getElementById('map'+i), {
-            zoom: 12,
-            center: posArticle
-        });
-        var marker = new google.maps.Marker({
-            position: posArticle,
-            map: map
-        });
+            var posArticle = {lat: Number(lati), lng: Number(longi)};
+            var map = new google.maps.Map(document.getElementById('map'+i), {
+                zoom: 12,
+                center: posArticle
+            });
+            var marker = new google.maps.Marker({
+                position: posArticle,
+                map: map
+            });
+        }
     }
 }
 
