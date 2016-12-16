@@ -383,7 +383,7 @@ function initMap() {
 
             var posArticle = {lat: Number(lati), lng: Number(longi)};
             var map = new google.maps.Map(document.getElementById('map'+i), {
-                zoom: 12,
+                zoom: Math.floor((Math.random() * 15) + 10),
                 center: posArticle
             });
             var marker = new google.maps.Marker({
