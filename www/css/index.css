@@ -115,18 +115,17 @@ div.card-content img, div.card-content p {
     margin: 0 3% 3% 0;
 }
 
-.card {
-    min-height: 200px;
+.card .card-action {
+    padding: 0;
 }
 
 .positionData {
     font-size: 1em;
     font-weight: bold;
-    padding-top: 5%;
 }
 /* google map style sheet */
 .geolocation {
-    margin-top: 5%;
+    margin-top: 6%;
 }
 
 .article_content {

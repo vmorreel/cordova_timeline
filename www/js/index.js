@@ -134,6 +134,8 @@ class Article {
     toHTML(){
         var picture = "<br>";
         var map = "<div id='map" + this.id + "' style='width:100%; height:175px; background-color: grey;'></div>"
+        var geolocation = "<div class='geolocation'>" + "<span class='positionData'>" + this.position + "</span>" + map
+        + "</div>";
 
         //recup values of lat on long in an array
         /*if (this.position) {
@@ -141,13 +143,14 @@ class Article {
         }*/
 
         if(this.position === undefined){
-            this.position = "Undefined location ¯\\_༼ ಥ ‿ ಥ ༽_/¯";
+            this.position = "";
             map = "</div>";
+            geolocation = "";
         }
 
         if (this.media !== undefined) {
             picture = "<img src='" + this.media + "'>";
-            return "<div class='col s12 m6'>"
+            return "<div class='col s12'>"
             + "<div class='card'>"
             + "<div class='card-image'>"
             + picture
@@ -155,25 +158,21 @@ class Article {
             + "</div>"
             + "<div class='card-content'>"
             + "<span>" + this.date + "</span>"
-            + "<div class='article_content'><p>" + this.content + "</p></div><br>"
-            + "<div class='geolocation'>"
-            + "<span class='positionData'>" + this.position + "</span>"
-            + map
-            + "</div>"
+            + "<div class='article_content'><p>" + this.content + "</p></div>"
+            + geolocation
             + "</div>";
         }
 
         else {
-            return "<div class='col s12 m6'>"
+            return "<div class='col s12'>"
             + "<div class='card'>"
             + "<div class='card-content'>"
             + "<span class='card-title'>" + this.title + "</span>"
-            + "<span>" + this.date + "</span>"
+            + "<span>" + this.date + "</span>"            
+            + "<div class='card-action'>"
             + picture
-            + "<p>" + this.content + "</p><br>"
-            + "<div id='geolocation'"
-            + "<span class='positionData'>" + this.position + "</span>"
-            + map
+            + "<p>" + this.content + "</p>"
+            + geolocation
             + "</div>"
             + "</div>"
             + "</div>";
@@ -197,8 +196,13 @@ function listerArticles() {
 }
 
 function showArticle(article) {
-    $('#articles_container>div.row').prepend(article.toHTML());
+    if(article.id%2 == 0)
+        $('#left').prepend(article.toHTML());
+    else
+        $('#right').prepend(article.toHTML());
 }
+
+//$('#articles_container>div.row').prepend(article.toHTML());
 
 function showArticles(){
     $.each(listerArticles(),function(i,article) {
